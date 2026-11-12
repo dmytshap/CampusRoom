@@ -1,5 +1,10 @@
 # CampusRoom
 Project for UEF Master level Software Engineering Course
 
-# Member
+# Members
 Viet Nguyen
+Eljas Puumalainen
+Samu Voutilainen
+Sampat Sharma
+Inusah Mohammed
+Dmytro Shapovalov
