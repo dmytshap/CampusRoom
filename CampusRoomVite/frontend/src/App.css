@@ -20,8 +20,9 @@
   padding: 14px 16px;
   text-decoration: none;
 }
+
 .navbar li:hover {
-  background-color:#111111;
+  background-color: #111111;
 }
 
 .mainSection {
@@ -31,11 +32,9 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 14px 16px;
+  padding: 2rem;
   min-height: 80vh;
-  padding: 2rem
 }
-
 
 .mainSection h2 {
   margin-top: 0;
@@ -60,10 +59,17 @@
   transition: background-color 0.2s;
   width: auto;
   min-width: 160px;
+  background-color: #2563eb;
 }
 
 .buttonGroup button:hover {
   background-color: #1d4ed8;
 }
 
-
+.endOfPage {
+  margin-top: auto;
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.9rem;
+}
