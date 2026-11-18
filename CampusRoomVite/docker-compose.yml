@@ -1,0 +1,19 @@
+services:
+  backend:
+    build: ./backend
+    container_name: campusroom-backend
+    environment:
+      - DB_PATH=/app/database/room_booking.db
+    volumes:
+      # Mount the host's database folder to the container
+      - ./database:/app/database
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: campusroom-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
