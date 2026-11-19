@@ -19,9 +19,13 @@ jobs:
         with: 
           node-version: '26.13.1'
           cache: 'npm'
+          cache-dependency-path: CampusRoomVite/frontend/package-lock.json
       - name: install depencies
+        working-directory: CampusRoomVite/frontend
         run: npm ci
       - name: Run ESLint
+        working-directory: CampusRoomVite/frontend
         run: npx eslint . 
       - name: Run Prettier check
+        working-directory: CampusRoomVite/frontend
         run: npx prettier --check .
