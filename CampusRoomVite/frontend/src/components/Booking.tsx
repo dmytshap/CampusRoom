@@ -1,8 +1,5 @@
 function Booking() {
-    return (
-        <>
-        </>
-    );
+  return <></>;
 }
 
 export default Booking;

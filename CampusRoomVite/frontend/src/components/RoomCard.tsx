@@ -1,8 +1,5 @@
 function RoomCard() {
-    return (
-        <>
-        </>
-    );
+  return <></>;
 }
 
 export default RoomCard;
