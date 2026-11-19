@@ -19,7 +19,7 @@ jobs:
         with: 
           node-version: '26.13.1'
           cache: 'npm'
-          cache-dependency-path: CampusRoomVite/frontend/package-lock.json
+          cache-dependency-path: CampusRoomVite/package-lock.json
       - name: install depencies
         working-directory: CampusRoomVite/frontend
         run: npm ci
