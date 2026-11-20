@@ -62,10 +62,10 @@ INSERT INTO rooms ("room_id", "building_id", "room_number", "capacity", "room_ty
 
 INSERT INTO rooms ("room_id", "building_id", "room_number", "capacity", "room_type") VALUES ("27", "6", "STU200", "30", "LABORATORY");
 
-INSERT INTO users ("user_id", "username", "role_id", "created_at") VALUES ("1","mikkoahto", "5", "CURRENT_TIMESTAMP");
-INSERT INTO users ("user_id", "username", "role_id", "created_at") VALUES ("2","helgarajala", "1", "CURRENT_TIMESTAMP");
-INSERT INTO users ("user_id", "username", "role_id", "created_at") VALUES ("3","lariraivio", "1", "CURRENT_TIMESTAMP");
-INSERT INTO users ("user_id", "username", "role_id", "created_at") VALUES ("4","noelhakola", "3", "CURRENT_TIMESTAMP");
-INSERT INTO users ("user_id", "username", "role_id", "created_at") VALUES ("5","kaijatala", "3", "CURRENT_TIMESTAMP");
-INSERT INTO users ("user_id", "username", "role_id", "created_at") VALUES ("7","ohtotammi", "2", "CURRENT_TIMESTAMP");
-INSERT INTO users ("user_id", "username", "role_id", "created_at") VALUES ("8","lyydiarantajarvi", "4", "CURRENT_TIMESTAMP");
+INSERT INTO users ("user_id", "username", "role_id", "created_at") VALUES ("1","mikkoahto", "5", CURRENT_TIMESTAMP);
+INSERT INTO users ("user_id", "username", "role_id", "created_at") VALUES ("2","helgarajala", "1", CURRENT_TIMESTAMP);
+INSERT INTO users ("user_id", "username", "role_id", "created_at") VALUES ("3","lariraivio", "1", CURRENT_TIMESTAMP);
+INSERT INTO users ("user_id", "username", "role_id", "created_at") VALUES ("4","noelhakola", "3", CURRENT_TIMESTAMP);
+INSERT INTO users ("user_id", "username", "role_id", "created_at") VALUES ("5","kaijatala", "3", CURRENT_TIMESTAMP);
+INSERT INTO users ("user_id", "username", "role_id", "created_at") VALUES ("7","ohtotammi", "2", CURRENT_TIMESTAMP);
+INSERT INTO users ("user_id", "username", "role_id", "created_at") VALUES ("8","lyydiarantajarvi", "4", CURRENT_TIMESTAMP);
