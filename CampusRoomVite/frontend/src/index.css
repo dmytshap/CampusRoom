@@ -34,7 +34,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #FCF1D0;
+    --text: #fcf1d0;
     --text-h: #f3f4f6;
     --bg: #010736;
     --border: #2e303a;
@@ -116,11 +116,11 @@ code {
   background: var(--code-bg);
 }
 
-input { 
-  background-color: #22396F;
+input {
+  background-color: #22396f;
   color: white;
 }
 
-button { 
-  background-color: #0D1C42;
+button {
+  background-color: #0d1c42;
 }

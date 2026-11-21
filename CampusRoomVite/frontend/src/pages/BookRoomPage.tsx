@@ -10,15 +10,12 @@ function BookRoomPage() {
         <MainSection />
         <div className="endOfPage">
           <footer>
-            <p>
-              Here you can book room
-            </p>
+            <p>Here you can book room</p>
           </footer>
         </div>
       </div>
     </>
   );
 }
-
 
 export default BookRoomPage;
