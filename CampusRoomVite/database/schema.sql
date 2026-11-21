@@ -3,7 +3,7 @@ PRAGMA foreign_keys = ON;
 
 CREATE TABLE roles (
     role_id INTEGER PRIMARY KEY,
-    role_name TEXT NOT NULL UNIQUE
+    role_name TEXT NOT NULL UNIQUE,
 );
 
 CREATE TABLE users (

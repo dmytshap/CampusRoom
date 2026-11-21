@@ -21,8 +21,8 @@ function MainSection() {
       <h2>Create Booking</h2>
       <p>press the button to make room booking</p>
       <div className="buttonGroup">
-        <button>Book</button>
-        <button>Available rooms</button>
+        <button>Book your room</button>
+        <button>Rooms' availability</button>
       </div>
 
       <ul>

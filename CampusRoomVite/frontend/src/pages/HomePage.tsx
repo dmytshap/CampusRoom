@@ -1,8 +1,8 @@
-import NavBar from "./components/Navbar";
-import MainSection from "./components/FirstPage";
-import "./App.css";
+import NavBar from "../components/Navbar";
+import MainSection from "../components/FirstPage";
+import "../styles/HomePage.css";
 
-function App() {
+function HomePage() {
   return (
     <>
       <div className="main">
@@ -21,4 +21,5 @@ function App() {
   );
 }
 
-export default App;
+
+export default HomePage;
