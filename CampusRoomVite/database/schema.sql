@@ -18,13 +18,13 @@ CREATE TABLE users (
 CREATE TABLE buildings (
     building_id INTEGER PRIMARY KEY,
     building_name TEXT NOT NULL,
-    address TEXT NOT NULL
+    building_address TEXT NOT NULL,
+    campus TEXT NOT NULL
 );
 
 CREATE TABLE rooms (
     room_id INTEGER PRIMARY KEY,
     building_id INTEGER NOT NULL,
-    campus TEXT NOT NULL,
     room_number TEXT NOT NULL,
     capacity INTEGER NOT NULL CHECK (capacity > 0),
     room_type TEXT NOT NULL,

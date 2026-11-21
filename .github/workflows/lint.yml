@@ -4,28 +4,28 @@ on:
   push:
     branches: [main]
   pull_request:
-      branches: [main]
+    branches: [main]
 
 jobs:
   lint:
     name: Run linter
     runs-on: ubuntu-latest
-  
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
       - name: Setup Node.js
         uses: actions/setup-node@v6
-        with: 
-          node-version: '26.13.1'
-          cache: 'npm'
+        with:
+          node-version: "26.13.1"
+          cache: "npm"
           cache-dependency-path: CampusRoomVite/frontend/package-lock.json
       - name: install depencies
         working-directory: CampusRoomVite/frontend
         run: npm ci
       - name: Run oxlint
         working-directory: CampusRoomVite/frontend
-        run: npx oxlint 
+        run: npx oxlint
       - name: Run Prettier check
         working-directory: CampusRoomVite/frontend
         run: npx prettier --check .

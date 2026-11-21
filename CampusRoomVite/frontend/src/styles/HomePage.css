@@ -4,27 +4,6 @@
   min-height: 100vh;
 }
 
-.navbar ul {
-  flex: 0;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  justify-content: space-between;
-  display: flex;
-}
-
-.navbar li {
-  float: left;
-  display: block;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-.navbar li:hover {
-  background-color: #111111;
-}
-
 .mainSection {
   flex: 2;
   display: flex;
