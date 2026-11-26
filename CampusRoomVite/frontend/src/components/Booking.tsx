@@ -3,10 +3,6 @@ import  { type Room }  from '../types/RoomType'
 import { type Booking } from '../types/BookingType'
 
 
-
-
-
-
 /**
  * Booking component 
  * @returns 
@@ -14,14 +10,18 @@ import { type Booking } from '../types/BookingType'
 
 function BookingComponent() {
 
-  const [newBooking, setNewBooking] = useState<Booking>({user_id:0, room_id:0, start_time:new Date() , end_time:new Date()})
+  //const [newBooking, setNewBooking] = useState<Booking>({user_id:0, room_id:0, start_time:new Date() , end_time:new Date()})
 
-  const [formData, setFormData] = useState()
+  const [formData, setFormData] = useState({user_id:0, room_id:0, start_time:new Date() , end_time:new Date()})
   const [showRooms, setShowRooms] = useState<boolean>(false)
-
+  
+  /**
+   * Function  
+   * @returns 
+   */
   function FetchAvailableRooms() {
-    const [rooms, setRooms] = useState<Room[]>([]);
     
+    const [rooms, setRooms] = useState<Room[]>([]);
     
       useEffect(() => {
         fetch("/api/rooms")
@@ -29,14 +29,16 @@ function BookingComponent() {
           .then((data: Room[]) => setRooms(data))
           .catch((err: unknown) => console.error(err));
       }, []);
+      
+      return (rooms.map((room) => {
+        return <tr key={room.room_id}>
+          <td>{room.room_number}</td>
+          <td>{room.capacity}</td>
+          <td>{room.room_type}</td>
+          <td><input type="checkbox" /></td>
+        </tr>
 
-      return <ul>
-        {rooms.map((room) => (
-          <li key={room.room_id}>
-            {room.room_number} (Capacity: {room.capacity})
-          </li>
-        ))}
-      </ul>
+      }));
   }
 
   const HandleSubmitEvent = (event: FormEvent<HTMLFormElement>) => {
@@ -44,12 +46,11 @@ function BookingComponent() {
 
 
     const CreateNewBooking: Booking = {
-        user_id: newBooking.user_id,
-        room_id: newBooking.room_id,
-        start_time: newBooking.start_time,
-        end_time: newBooking.end_time
+        user_id: formData.user_id,
+        room_id: formData.room_id,
+        start_time: formData.start_time,
+        end_time: formData.end_time
      }
-
 
      console.log("CREATED NEW BOOKING: ", CreateNewBooking)
 
@@ -59,7 +60,7 @@ function BookingComponent() {
   const HandleChangeEvent = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target 
 
-    setNewBooking((prev) => ({...prev,
+    setFormData((prev) => ({...prev,
       [name]: value
     }));
 
@@ -70,7 +71,7 @@ function BookingComponent() {
     <div className="Booking">
       <form onSubmit={HandleSubmitEvent}>
           <fieldset>
-              <legend>Your info</legend>
+              <legend>Fill the info</legend>
                 <label htmlFor="fname">First name:</label><br />
                 <input
                   type="text"
@@ -116,12 +117,29 @@ function BookingComponent() {
                 />
                 
                 <button type="button" onClick={() => setShowRooms(true)}>Press to see available rooms</button>
+                
+                <section className="SelectRoom">
+                  {showRooms ? (
+                          <div>
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>Room number</th>
+                                  <th>Capacity</th>
+                                  <th>Type</th>
+                                  <th>Select</th>
+                                </tr>
+                              </thead>
+                            </table>
+                            <FetchAvailableRooms/>
+                          </div>
+                          
+                        ): <p>button not pressed</p> 
+                          
+                        }
 
-                {showRooms ? (
-                  <FetchAvailableRooms/>
-                ): <p>button not pressed</p> 
-                  
-                }
+                </section>
+                
 
                 <button type="submit">Submit</button>
 
@@ -129,10 +147,7 @@ function BookingComponent() {
       </form>
 
       <br />
-      <section className="SelectRoom">
-          
-
-      </section>
+      
 
     </div>
   </>
