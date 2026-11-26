@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 
-interface Room {
-  room_id: number;
-  room_number: string;
-  capacity: number;
-}
+import { type Room } from '../types/RoomType.tsx'
+
 
 function MainSection() {
   const [rooms, setRooms] = useState<Room[]>([]);

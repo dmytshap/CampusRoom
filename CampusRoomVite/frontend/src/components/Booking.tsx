@@ -1,16 +1,9 @@
-import { useState, type FormEvent, type ChangeEvent } from 'react'
-
-  interface Booking {
-    user_id: number,
-    room_id: number,
-    start_time: Date,
-    end_time: Date
-  };
+import { useState, useEffect, type FormEvent, type ChangeEvent } from 'react'
+import  { type Room }  from '../types/RoomType'
+import { type Booking } from '../types/BookingType'
 
 
-function FetchAvailableRooms() {
-  return
-}
+
 
 
 
@@ -25,6 +18,26 @@ function BookingComponent() {
 
   const [formData, setFormData] = useState()
   const [showRooms, setShowRooms] = useState<boolean>(false)
+
+  function FetchAvailableRooms() {
+    const [rooms, setRooms] = useState<Room[]>([]);
+    
+    
+      useEffect(() => {
+        fetch("/api/rooms")
+          .then((res) => res.json())
+          .then((data: Room[]) => setRooms(data))
+          .catch((err: unknown) => console.error(err));
+      }, []);
+
+      return <ul>
+        {rooms.map((room) => (
+          <li key={room.room_id}>
+            {room.room_number} (Capacity: {room.capacity})
+          </li>
+        ))}
+      </ul>
+  }
 
   const HandleSubmitEvent = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -87,8 +100,8 @@ function BookingComponent() {
                   type="time"
                   id="startTime"
                   name="startTime"
-                  min="08.00"
-                  max="16.00"
+                  min="08:00"
+                  max="16:00"
                   onChange={HandleChangeEvent}
                 />
 
@@ -97,15 +110,15 @@ function BookingComponent() {
                   type="time"
                   id="endTime"
                   name="endTime"
-                  min="09.00"
-                  max="17.00"
+                  min="09:00"
+                  max="17:00"
                   onChange={HandleChangeEvent}
                 />
                 
                 <button type="button" onClick={() => setShowRooms(true)}>Press to see available rooms</button>
 
                 {showRooms ? (
-                  <p>button clicked</p>
+                  <FetchAvailableRooms/>
                 ): <p>button not pressed</p> 
                   
                 }
