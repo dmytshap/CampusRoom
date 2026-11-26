@@ -11,7 +11,7 @@ app.use(express.json());
 // Use process.env.DB_PATH if set, otherwise default to the mounted path
 // In Docker, __dirname is /app, so /app/database/room_booking.db works with the volume mount
 const dbPath =
-  process.env.DB_PATH || path.join(__dirname, "database", "room_booking.db");
+  process.env.DB_PATH || path.join(__dirname,"..", "database", "room_booking.db");
 
 console.log(`Attempting to connect to database at: ${dbPath}`);
 
@@ -45,4 +45,15 @@ app.get("/api/bookings", (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Backend server running on port ${PORT}`);
+});
+
+app.get("/api/roles", (req, res) => {
+  db.all("SELECT role_id, role_name FROM roles", [], (err, rows) => {
+    if (err) {
+      console.error(err.message);
+      return res.status(500).json({error: err.message});
+    } 
+    
+    res.json(rows);
+  });
 });

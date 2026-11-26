@@ -30,7 +30,7 @@ function LoginPage() {
             <button type="submit">Log in</button>
           </form>
           <p className="no-account">
-            Don't have an account? <Link to="/createaccount">Click here.</Link>
+            Don't have an account? <Link to="/register">Click here.</Link>
           </p>
         </div>
         <div className="endOfPage">
