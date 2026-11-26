@@ -4,7 +4,7 @@ import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
 import BookRoomPage from "./BookRoomPage";
 import NotFoundPage from "./NotFoundPage";
-import CreateAccountPage from "./CreateAccountPage";
+import RegisterPage from "./RegisterPage";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
 
       <Route path="/book" element={<BookRoomPage />} />
 
-      <Route path="/createaccount" element={<CreateAccountPage />} />
+      <Route path="/register" element={<RegisterPage />} />
       {/* if user tries to go on page that does not exist they will be redicted to login page */}
       <Route path="/notfoundpage" element={<NotFoundPage />} />
     </Routes>
