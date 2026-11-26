@@ -1,5 +1,7 @@
 import NavBar from "../components/Navbar";
-import MainSection from "../components/FirstPage";
+
+import BookingComponent from "../components/Booking";
+
 import "../styles/HomePage.css";
 
 function BookRoomPage() {
@@ -7,7 +9,7 @@ function BookRoomPage() {
     <>
       <div className="main">
         <NavBar />
-        <MainSection />
+        <BookingComponent />
         <div className="endOfPage">
           <footer>
             <p>Here you can book room</p>
