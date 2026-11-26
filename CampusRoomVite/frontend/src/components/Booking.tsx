@@ -8,15 +8,20 @@ import { type Booking } from "../types/BookingType";
  */
 
 function BookingComponent() {
+  
   //const [newBooking, setNewBooking] = useState<Booking>({user_id:0, room_id:0, start_time:new Date() , end_time:new Date()})
 
   const [formData, setFormData] = useState({
     user_id: 0,
     room_id: 0,
-    start_time: new Date(),
-    end_time: new Date(),
+    date: "",
+    startTime: "",
+    endTime: "",
   });
   const [showRooms, setShowRooms] = useState<boolean>(false);
+
+
+  const [selectedRoomId, setSelectedRoomId] = useState<number>(0)
 
   /**
    * Function  
@@ -39,7 +44,10 @@ function BookingComponent() {
           <td>{room.capacity}</td>
           <td>{room.room_type}</td>
           <td>
-            <input type="checkbox" />
+            <input type="checkbox" name="room_id" 
+            onChange={HandleChangeEvent}
+            checked={selectedRoomId === room.room_id}
+            value={room.room_id}/>
           </td>
         </tr>
       );
@@ -49,20 +57,41 @@ function BookingComponent() {
   const HandleSubmitEvent = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+
+
+    
+
+    const start_time = new Date(`${formData.date}T${formData.startTime}`)
+    const end_time = new Date(`${formData.date}T${formData.endTime}`)
+
+
     const CreateNewBooking: Booking = {
       user_id: formData.user_id,
-      room_id: formData.room_id,
-      start_time: formData.start_time,
-      end_time: formData.end_time,
+      room_id: selectedRoomId,
+      start_time: start_time,
+      end_time: end_time,
     };
 
     console.log("CREATED NEW BOOKING: ", CreateNewBooking);
+
+    
+
+
   };
 
   const HandleChangeEvent = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+    
+    const { name, value, checked, type } = event.target;
 
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === "room_id" )  {
+      const roomIdnum = Number(value)
+
+      setSelectedRoomId(checked ? roomIdnum : 0);
+      return;
+
+    }
+
+    setFormData((prev) => ({ ...prev, [name]: type === "checkbox" ? checked :  value }));
   };
 
   return (
@@ -135,8 +164,13 @@ function BookingComponent() {
                         <th>Select</th>
                       </tr>
                     </thead>
+                    <tbody>
+
+                      <FetchAvailableRooms />
+                    </tbody>
                   </table>
-                  <FetchAvailableRooms />
+                  
+                  
                 </div>
               ) : (
                 <p>button not pressed</p>
