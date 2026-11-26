@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { type Room } from '../types/RoomType.tsx'
-
+import { type Room } from "../types/RoomType.tsx";
 
 function MainSection() {
   const [rooms, setRooms] = useState<Room[]>([]);
