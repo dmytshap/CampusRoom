@@ -19,11 +19,15 @@ function App() {
       // 3. Not Found page
       {/* if user tries to go on page that does not exist they will be redicted to login page */}
       <Route path="/notfoundpage" element={<NotFoundPage />} />
-    
+      
+      
+      {/* ProtectedRoute */}
       <Route element={<ProtectedRoute/>}>
-        <Route path="/homepage" element={<HomePage />} />
+ 
+         <Route path="/homepage" element={<HomePage />} />
 
-        <Route path="/book" element={<BookRoomPage />} />
+         <Route path="/book" element={<BookRoomPage />} />
+      
       </Route>
     </Routes>
   );
