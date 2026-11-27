@@ -58,7 +58,7 @@ async function login(username: string, password: string) {
     const data = await response.json();
 
     if (!response.ok) { 
-        throw new Error(data.message || "Login Failed");
+        throw new Error(data.error || "Login Failed");
     }
     setUser(data.user);
 }

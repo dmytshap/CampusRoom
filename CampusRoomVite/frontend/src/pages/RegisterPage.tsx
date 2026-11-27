@@ -98,7 +98,7 @@ useEffect(() => {
       <div className="main">
         <NavBar />
 
-        <h1 className="login-title"> Login</h1>
+        <h1 className="register-title"> Register your account here</h1>
 
         <div className="btn-container">
           {error && <p className="register-error">{error}</p>}
