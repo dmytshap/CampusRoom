@@ -3,22 +3,20 @@ import { useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import "../styles/RegisterPage.css";
 
-
 interface Role {
-    role_id: number;
-    role_name: string;
-  }
+  role_id: number;
+  role_name: string;
+}
 
 function RegisterPage() {
   // Registration form states
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  
+
   // Registration form response states
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-
 
   // Registration form role states
   const [roles, setRoles] = useState<Role[]>([]);
@@ -28,7 +26,7 @@ function RegisterPage() {
 
   async function handleRegister(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-  
+
     setError("");
     setSuccess("");
 
@@ -71,27 +69,27 @@ function RegisterPage() {
     }
   }
 
-useEffect(() => {
-  async function fetchRoles() {
-    try {
-      const response = await fetch("/api/roles");
+  useEffect(() => {
+    async function fetchRoles() {
+      try {
+        const response = await fetch("/api/roles");
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch roles.");
+        if (!response.ok) {
+          throw new Error("Failed to fetch roles.");
+        }
+
+        const data: Role[] = await response.json();
+
+        setRoles(data);
+      } catch (error) {
+        console.error(error);
+        setRolesError("Could not load roles.");
+      } finally {
+        setRolesLoading(false);
       }
-
-      const data: Role[] = await response.json();
-
-      setRoles(data);
-    } catch (error) {
-      console.error(error);
-      setRolesError("Could not load roles.");
-    } finally {
-      setRolesLoading(false);
     }
-  }
-  fetchRoles();
-}, []);
+    fetchRoles();
+  }, []);
 
   return (
     <>
@@ -102,33 +100,54 @@ useEffect(() => {
 
         <div className="btn-container">
           {error && <p className="register-error">{error}</p>}
-          {success && <p className="register-success">{success}</p>}  
+          {success && <p className="register-success">{success}</p>}
           <form className="login-form" onSubmit={handleRegister}>
             <label htmlFor="username">Username</label>
-            <input id="username" type="text"  value={username} onChange={(event) => setUsername(event.target.value)} minLength={3}
-            required/>
+            <input
+              id="username"
+              type="text"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              minLength={3}
+              required
+            />
 
             <label htmlFor="password">Password </label>
-            <input id="password" type="password" value={password} onChange={(event) => setPassword(event.target.value)}
-            required />
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
 
-            <label htmlFor="confirmPassword"> Confirm   password </label>
-            <input id="confirmPassword" type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)}
-            required />
-
-
+            <label htmlFor="confirmPassword"> Confirm password </label>
+            <input
+              id="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={(event) => setConfirmPassword(event.target.value)}
+              required
+            />
 
             <label htmlFor="role"> What is your Role?</label>
-            
-            <select id="role" className="select-role" value={selectedRole} onChange={(event) => setSelectedRole(event.target.value)} required disabled={rolesLoading || rolesError !== ""}>
-            <option value="">
-              {rolesLoading ? "Loading roles..." : "Choose a role"}
-            </option>
-            {roles.map((role) => (
-              <option key={role.role_id} value={role.role_id}>
-                {role.role_name}
+
+            <select
+              id="role"
+              className="select-role"
+              value={selectedRole}
+              onChange={(event) => setSelectedRole(event.target.value)}
+              required
+              disabled={rolesLoading || rolesError !== ""}
+            >
+              <option value="">
+                {rolesLoading ? "Loading roles..." : "Choose a role"}
               </option>
-            ))}
+              {roles.map((role) => (
+                <option key={role.role_id} value={role.role_id}>
+                  {role.role_name}
+                </option>
+              ))}
             </select>
             {rolesError && <p className="register-error">{rolesError}</p>}
             <button type="submit">Create an Account</button>

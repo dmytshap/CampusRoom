@@ -6,33 +6,36 @@ const cors = require("cors");
 const path = require("path");
 const bcrypt = require("bcryptjs");
 
-
 const app = express();
 
-app.use(cors({
+app.use(
+  cors({
     origin: "http://localhost:5173",
-    credentials: true
-}));
-
+    credentials: true,
+  }),
+);
 
 app.use(express.json());
 
-app.use(session({
+app.use(
+  session({
     secret: process.env.SESSION_SECRET || "development-secret-change-me",
     resave: false,
     saveUninitialized: false,
     cookie: {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-        maxAge: 1000 * 60 * 60 * 24
-    }
-}));
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 1000 * 60 * 60 * 24,
+    },
+  }),
+);
 
 // Use process.env.DB_PATH if set, otherwise default to the mounted path
 // In Docker, __dirname is /app, so /app/database/room_booking.db works with the volume mount
 const dbPath =
-  process.env.DB_PATH || path.join(__dirname,"..", "database", "room_booking.db");
+  process.env.DB_PATH ||
+  path.join(__dirname, "..", "database", "room_booking.db");
 
 console.log(`Attempting to connect to database at: ${dbPath}`);
 
@@ -63,8 +66,7 @@ app.get("/api/bookings", (req, res) => {
   });
 });
 
-
-app.post("/api/auth/login", async(req,res) => {
+app.post("/api/auth/login", async (req, res) => {
   const { username, password } = req.body;
 
   if (
@@ -74,7 +76,7 @@ app.post("/api/auth/login", async(req,res) => {
     !password
   ) {
     return res.status(400).json({
-      error: "Username and password are required."
+      error: "Username and password are required.",
     });
   }
 
@@ -82,138 +84,138 @@ app.post("/api/auth/login", async(req,res) => {
     // Retrieve user info from database
 
     const user = await new Promise((resolve, reject) => {
-      db.get('SELECT users.user_id, users.username, users.password_hash, users.role_id, roles.role_name FROM users JOIN roles ON users.role_id = roles.role_id WHERE users.username = ?',
-        [username.trim()], (err, row) => {if (err) reject(err); else resolve(row);}
+      db.get(
+        "SELECT users.user_id, users.username, users.password_hash, users.role_id, roles.role_name FROM users JOIN roles ON users.role_id = roles.role_id WHERE users.username = ?",
+        [username.trim()],
+        (err, row) => {
+          if (err) reject(err);
+          else resolve(row);
+        },
       );
     });
 
     if (!user) {
       return res.status(401).json({
-        error: "Invalid username or password."
+        error: "Invalid username or password.",
       });
     }
 
     // Compare password given by user with stored hash
 
-    const passwordMatches = await bcrypt.compare(
-      password,
-      user.password_hash
-    );
+    const passwordMatches = await bcrypt.compare(password, user.password_hash);
 
     if (!passwordMatches) {
       return res.status(401).json({
-        error: "Invalid username or password."
+        error: "Invalid username or password.",
       });
     }
 
-      // Session creation
+    // Session creation
 
-      req.session.userId = user.user_id;
+    req.session.userId = user.user_id;
 
-      req.session.save((err) => {
-        if (err) {
-          console.error("SESSION ERROR:", err);
-          return res.status(500).json({
-            error: "Could not create session."
-          });
-        }
-
-          res.json({
-            message: "Login successful.",
-            user: {
-              user_id: user.user_id,
-              username: user.username,
-              role_id: user.role_id,
-              role_name: user.role_name
-            }
-          });
+    req.session.save((err) => {
+      if (err) {
+        console.error("SESSION ERROR:", err);
+        return res.status(500).json({
+          error: "Could not create session.",
         });
-      } catch (error) {
-        console.error("LOGIN ERROR:", error);
-        res.status(500).json({
-          error: "Login failed."
-        });
-    }
-  });
+      }
+
+      res.json({
+        message: "Login successful.",
+        user: {
+          user_id: user.user_id,
+          username: user.username,
+          role_id: user.role_id,
+          role_name: user.role_name,
+        },
+      });
+    });
+  } catch (error) {
+    console.error("LOGIN ERROR:", error);
+    res.status(500).json({
+      error: "Login failed.",
+    });
+  }
+});
 
 // Check current session
 app.get("/api/auth/me", async (req, res) => {
-    if (!req.session.userId) {
-        return res.status(401).json({
-            error: "Not authenticated."
-        });
-    }
+  if (!req.session.userId) {
+    return res.status(401).json({
+      error: "Not authenticated.",
+    });
+  }
 
-    try {
-        const user = await new Promise((resolve, reject) => {
-            db.get(
-                `SELECT users.user_id, users.username,
+  try {
+    const user = await new Promise((resolve, reject) => {
+      db.get(
+        `SELECT users.user_id, users.username,
                         users.role_id, roles.role_name
                  FROM users
                  JOIN roles ON users.role_id = roles.role_id
                  WHERE users.user_id = ?`,
-                [req.session.userId],
-                (err, row) => {
-                    if (err) reject(err);
-                    else resolve(row);
-                }
-            );
-        });
+        [req.session.userId],
+        (err, row) => {
+          if (err) reject(err);
+          else resolve(row);
+        },
+      );
+    });
 
-        if (!user) {
-            return res.status(401).json({
-                error: "User no longer exists."
-            });
-        }
-
-        res.json({ user });
-
-    } catch (error) {
-        console.error("SESSION CHECK ERROR:", error);
-
-        res.status(500).json({
-            error: "Could not verify session."
-        });
+    if (!user) {
+      return res.status(401).json({
+        error: "User no longer exists.",
+      });
     }
+
+    res.json({ user });
+  } catch (error) {
+    console.error("SESSION CHECK ERROR:", error);
+
+    res.status(500).json({
+      error: "Could not verify session.",
+    });
+  }
 });
 
 // Logout
 app.post("/api/auth/logout", (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error("LOGOUT ERROR:", err);
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("LOGOUT ERROR:", err);
 
-            return res.status(500).json({
-                error: "Could not log out."
-            });
-        }
+      return res.status(500).json({
+        error: "Could not log out.",
+      });
+    }
 
-        res.clearCookie("connect.sid");
+    res.clearCookie("connect.sid");
 
-        res.json({
-            message: "Logged out successfully."
-        });
+    res.json({
+      message: "Logged out successfully.",
     });
+  });
 });
-
 
 app.get("/api/roles", (req, res) => {
   db.all("SELECT role_id, role_name FROM roles", [], (err, rows) => {
     if (err) {
       console.error(err.message);
-      return res.status(500).json({error: err.message});
-    } 
-    
+      return res.status(500).json({ error: err.message });
+    }
+
     res.json(rows);
   });
 });
 
-app.post("/api/auth/register", async (req,res) => {
-  const {username, password, role_id} = req.body;
+app.post("/api/auth/register", async (req, res) => {
+  const { username, password, role_id } = req.body;
 
   if (!username || !password || !role_id) {
     return res.status(400).json({
-      error: "Username, password and role are all required"
+      error: "Username, password and role are all required",
     });
   }
 
@@ -221,20 +223,20 @@ app.post("/api/auth/register", async (req,res) => {
 
   if (trimmedUsername.length < 3) {
     return res.status(400).json({
-      error: "Username must be at least 3 characters long."
+      error: "Username must be at least 3 characters long.",
     });
   }
- 
+
   if (password.length < 3) {
     return res.status(400).json({
-      error: "Password must be at least 3 characters long."
+      error: "Password must be at least 3 characters long.",
     });
   }
   const selectedRoleId = Number(role_id);
 
   if (!Number.isInteger(selectedRoleId)) {
     return res.status(400).json({
-      error: "Invalid role."
+      error: "Invalid role.",
     });
   }
 
@@ -250,7 +252,7 @@ app.post("/api/auth/register", async (req,res) => {
 
         if (!role) {
           return res.status(400).json({
-            error: "Selected role does not exist."
+            error: "Selected role does not exist.",
           });
         }
 
@@ -266,13 +268,13 @@ app.post("/api/auth/register", async (req,res) => {
             if (err) {
               if (err.message.includes("UNIQUE constraint failed")) {
                 return res.status(409).json({
-                  error: "Username already exists."
+                  error: "Username already exists.",
                 });
               }
 
               console.error(err.message);
               return res.status(500).json({
-                error: "Could not create user."
+                error: "Could not create user.",
               });
             }
 
@@ -280,21 +282,19 @@ app.post("/api/auth/register", async (req,res) => {
               message: "User registered successfully.",
               user_id: this.lastID,
               username: trimmedUsername,
-              role_id: selectedRoleId
+              role_id: selectedRoleId,
             });
-          }
+          },
         );
-      }
+      },
     );
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      error: "Registration failed."
+      error: "Registration failed.",
     });
   }
 });
-
-
 
 // This should be at the bottom
 // This should run only after every /api/ is created.

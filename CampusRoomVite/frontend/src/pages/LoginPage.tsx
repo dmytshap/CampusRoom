@@ -14,13 +14,12 @@ function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-
   async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    
+
     setError("");
     setLoading(true);
-    
+
     try {
       await login(username, password);
 
@@ -46,12 +45,26 @@ function LoginPage() {
         <div className="btn-container">
           <form className="login-form" onSubmit={handleLogin}>
             <label htmlFor="username">Username</label>
-            <input id="username" type="text" value={username} onChange={(event) => setUsername(event.target.value)} required />
+            <input
+              id="username"
+              type="text"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              required
+            />
 
             <label htmlFor="password">Password </label>
-            <input id="password" type="password" value={password} onChange={(event) => setPassword(event.target.value)}  required />
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
 
-            <button type="submit" disabled={loading}>{loading ? "Logging in..." : "Log in"} </button>
+            <button type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Log in"}{" "}
+            </button>
           </form>
           <p className="no-account">
             Don't have an account? <Link to="/register">Click here.</Link>
