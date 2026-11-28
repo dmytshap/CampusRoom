@@ -11,6 +11,7 @@ CREATE TABLE users (
     username TEXT NOT NULL UNIQUE,
     role_id INTEGER NOT NULL,
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    password_hash TEXT NOT NULL,
 
     FOREIGN KEY (role_id) REFERENCES roles(role_id)
 );
